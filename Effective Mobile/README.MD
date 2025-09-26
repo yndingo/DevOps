@@ -61,7 +61,7 @@ Description=Run Process Monitor every minute
 </br></br>
 [Timer] </br>
 OnBootSec=1min </br>
-OnCalendar=*:*:00 </br>
+OnCalendar=*:*:00
  </br> </br>
 [Install] </br>
 WantedBy=timers.target
