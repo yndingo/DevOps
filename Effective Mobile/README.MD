@@ -13,12 +13,12 @@ https://test.com/monitoring/test/api</br>
 В начале создаю файл /usr/local/bin/process_monitor.sh
 </br>
 #!/bin/bash
-</br>
+</br></br>
 # Лог-файл
 LOG_FILE="/var/log/monitoring.log"
-</br>
+</br></br>
 # Проверяю наличие запущенного процесса 'test'
-if pgrep -f 'test' > /dev/null ; then
+if pgrep -f 'test' > /dev/null ; then</br>
     # Процесс найден, отправляю POST запрос</br>
     # --max-time 5 ограничит ожидание сервера максимум пятью секундами.</br>
     # -sSfL отключает вывод стандартных сообщений и выводит статусный код HTTP</br>
@@ -26,16 +26,16 @@ if pgrep -f 'test' > /dev/null ; then
     # Сообщение записываю в лог-файл с указанием текущего времени.</br>
     if curl -sSfL --max-time 5 --output /dev/null --write-out '%{http_code}' \\
        "https://test.com/monitoring/test/api" | grep -q '^2'; then
-        echo "$(date +'%Y-%m-%d %H:%M:%S') Процесс запущен и сервер мониторинга на связи" >> "${LOG_FILE}"
-    else
-        echo "$(date +'%Y-%m-%d %H:%M:%S') Сервер мониторинга не на связи" >> "${LOG_FILE}"
-    fi
-else
-    # Перезапускаю процесс
-    echo "$(date +'%Y-%m-%d %H:%M:%S') Перезапуск процесса" >> "${LOG_FILE}"
-    # Команда start-stop-daemon используется для запуска процесса в фоновом режиме.
-    exec start-stop-daemon --start --name test --exec /путь_к_процессу_'test' &
-fi
+        echo "$(date +'%Y-%m-%d %H:%M:%S') Процесс запущен и сервер мониторинга на связи" >> "${LOG_FILE}"</br>
+    else</br>
+        echo "$(date +'%Y-%m-%d %H:%M:%S') Сервер мониторинга не на связи" >> "${LOG_FILE}"</br>
+    fi</br>
+else</br>
+    # Перезапускаю процесс</br>
+    echo "$(date +'%Y-%m-%d %H:%M:%S') Перезапуск процесса" >> "${LOG_FILE}"</br>
+    # Команда start-stop-daemon используется для запуска процесса в фоновом режиме.</br>
+    exec start-stop-daemon --start --name test --exec /путь_к_процессу_'test' &</br>
+fi</br>
 </br>
 </br>
 создадаю сервис unit file для systemd, который обеспечит выполнение скрипта каждую минуту. 
