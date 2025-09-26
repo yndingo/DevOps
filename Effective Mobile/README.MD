@@ -45,20 +45,20 @@ fi</br>
 [Unit]
 Description=Process Monitor Service for Test process
 After=network.target
-
+</br></br>
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/process_monitor.sh
 Restart=on-failure
-
+</br></br>
 [Install]
 WantedBy=multi-user.target
 </br>
 </br>
-создаю таймер, который запустится сразу после загрузки системы и выполнит указанный выше сервис каждую минуту. Создаю файл /etc/systemd/system/process-monitor.timer
-[Unit]
+создаю таймер, который запустится сразу после загрузки системы и выполнит указанный выше сервис каждую минуту. </br>Создаю файл /etc/systemd/system/process-monitor.timer</br>
+[Unit]</br>
 Description=Run Process Monitor every minute
-
+</br></br>
 [Timer]
 OnBootSec=1min
 OnCalendar=*:*:00
@@ -67,19 +67,19 @@ OnCalendar=*:*:00
 WantedBy=timers.target
 </br>
 </br>
-Делаю скрипт исполняемым
-sudo chmod +x /usr/local/bin/process_monitor.sh
+Делаю скрипт исполняемым </br>
+sudo chmod +x /usr/local/bin/process_monitor.sh </br>
 </br>
-Перезагружаю конфигурацию systemd
-sudo systemctl daemon-reload
+Перезагружаю конфигурацию systemd </br>
+sudo systemctl daemon-reload </br>
 </br>
-Активирую таймер и проверяем состояние
-sudo systemctl enable process-monitor.timer
-sudo systemctl start process-monitor.timer
-sudo systemctl list-timers
+Активирую таймер и проверяем состояние </br>
+sudo systemctl enable process-monitor.timer </br>
+sudo systemctl start process-monitor.timer </br>
+sudo systemctl list-timers </br>
 </br>
-Проверяю логи, если возникли проблемы
-journalctl -xe
+Проверяю логи, если возникли проблемы </br>
+journalctl -xe </br>
 cat /var/log/monitoring.log
 
 
