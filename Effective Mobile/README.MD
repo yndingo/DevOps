@@ -17,7 +17,7 @@ https://test.com/monitoring/test/api</br>
 # Лог-файл
 LOG_FILE="/var/log/monitoring.log"
 </br></br>
-# Проверяю наличие запущенного процесса 'test'
+# Проверяю наличие запущенного процесса 'test'</br>
 if pgrep -f 'test' > /dev/null ; then</br>
     # Процесс найден, отправляю POST запрос</br>
     # --max-time 5 ограничит ожидание сервера максимум пятью секундами.</br>
