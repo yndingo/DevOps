@@ -20,21 +20,21 @@ LOG_FILE="/var/log/monitoring.log"
 # Проверяю наличие запущенного процесса 'test'</br>
 if pgrep -f 'test' > /dev/null ; then</br>
 &nbsp;&nbsp;&nbsp;    # Процесс найден, отправляю POST запрос</br>
-    # --max-time 5 ограничит ожидание сервера максимум пятью секундами.</br>
-    # -sSfL отключает вывод стандартных сообщений и выводит статусный код HTTP</br>
-    # Если код ответа начинается с цифры 2, значит всё хорошо (например, успешный ответ 200 OK), иначе считаю сервер недоступным</br>
-    # Сообщение записываю в лог-файл с указанием текущего времени.</br>
-    if curl -sSfL --max-time 5 --output /dev/null --write-out '%{http_code}' \\
-       "https://test.com/monitoring/test/api" | grep -q '^2'; then
-        echo "$(date +'%Y-%m-%d %H:%M:%S') Процесс запущен и сервер мониторинга на связи" >> "${LOG_FILE}"</br>
-    else</br>
-        echo "$(date +'%Y-%m-%d %H:%M:%S') Сервер мониторинга не на связи" >> "${LOG_FILE}"</br>
-    fi</br>
+&nbsp;&nbsp;&nbsp;    # --max-time 5 ограничит ожидание сервера максимум пятью секундами.</br>
+&nbsp;&nbsp;&nbsp;    # -sSfL отключает вывод стандартных сообщений и выводит статусный код HTTP</br>
+&nbsp;&nbsp;&nbsp;    # Если код ответа начинается с цифры 2, значит всё хорошо (например, успешный ответ 200 OK), иначе считаю сервер недоступным</br>
+&nbsp;&nbsp;&nbsp;    # Сообщение записываю в лог-файл с указанием текущего времени.</br>
+&nbsp;&nbsp;&nbsp;    if curl -sSfL --max-time 5 --output /dev/null --write-out '%{http_code}' \\ </br>
+&nbsp;&nbsp;&nbsp;       "https://test.com/monitoring/test/api" | grep -q '^2'; then </br>
+&nbsp;&nbsp;&nbsp;        echo "$(date +'%Y-%m-%d %H:%M:%S') Процесс запущен и сервер мониторинга на связи" >> "${LOG_FILE}" </br>
+&nbsp;&nbsp;&nbsp;    else</br>
+&nbsp;&nbsp;&nbsp;        echo "$(date +'%Y-%m-%d %H:%M:%S') Сервер мониторинга не на связи" >> "${LOG_FILE}"</br>
+&nbsp;&nbsp;&nbsp;    fi</br>
 else</br>
-    # Перезапускаю процесс</br>
-    echo "$(date +'%Y-%m-%d %H:%M:%S') Перезапуск процесса" >> "${LOG_FILE}"</br>
-    # Команда start-stop-daemon используется для запуска процесса в фоновом режиме.</br>
-    exec start-stop-daemon --start --name test --exec /путь_к_процессу_'test' &</br>
+&nbsp;&nbsp;&nbsp;    # Перезапускаю процесс</br>
+&nbsp;&nbsp;&nbsp;    echo "$(date +'%Y-%m-%d %H:%M:%S') Перезапуск процесса" >> "${LOG_FILE}"</br>
+&nbsp;&nbsp;&nbsp;    # Команда start-stop-daemon используется для запуска процесса в фоновом режиме.</br>
+&nbsp;&nbsp;&nbsp;    exec start-stop-daemon --start --name test --exec /путь_к_процессу_'test' &</br>
 fi</br>
 </br>
 </br>
