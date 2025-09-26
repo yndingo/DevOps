@@ -42,28 +42,28 @@ fi</br>
 Создаю файл /etc/systemd/system/process-monitor.service
 </br>
 </br>
-[Unit]
-Description=Process Monitor Service for Test process
+[Unit] </br>
+Description=Process Monitor Service for Test process </br>
 After=network.target
 </br></br>
-[Service]
-Type=simple
-ExecStart=/usr/local/bin/process_monitor.sh
+[Service] </br>
+Type=simple </br>
+ExecStart=/usr/local/bin/process_monitor.sh </br>
 Restart=on-failure
 </br></br>
-[Install]
+[Install] </br>
 WantedBy=multi-user.target
 </br>
 </br>
 создаю таймер, который запустится сразу после загрузки системы и выполнит указанный выше сервис каждую минуту. </br>Создаю файл /etc/systemd/system/process-monitor.timer</br>
-[Unit]</br>
+[Unit] </br>
 Description=Run Process Monitor every minute
 </br></br>
-[Timer]
-OnBootSec=1min
-OnCalendar=*:*:00
-
-[Install]
+[Timer] </br>
+OnBootSec=1min </br>
+OnCalendar=*:*:00 </br>
+ </br> </br>
+[Install] </br>
 WantedBy=timers.target
 </br>
 </br>
