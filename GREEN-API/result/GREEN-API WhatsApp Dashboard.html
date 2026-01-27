@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GREEN-API WhatsApp Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #128c7e;
+            --primary-light: #25d366;
+            --bg-dark: #0d1418;
+            --bg-light: #111b21;
+            --text-primary: #e9edef;
+            --text-secondary: #aebac1;
+            --border: #2a3f35;
+            --error: #f44336;
+            --success: #4caf50;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-light);
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(37, 211, 102, 0.2);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .panel {
+            background: rgba(20, 31, 37, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .panel h2 {
+            font-size: 1.3rem;
+            color: var(--primary-light);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 24px;
+            background: var(--primary-light);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: rgba(37, 211, 102, 0.1);
+            box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+        }
+
+        button.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .response-panel {
+            grid-column: 1 / -1;
+            min-height: 300px;
+        }
+
+        #responseOutput {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            color: var(--text-primary);
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+            line-height: 1.5;
+            resize: none;
+        }
+
+        #responseOutput::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #responseOutput::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        #responseOutput::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+
+        #responseOutput::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+        .status.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+
+        .status.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+
+        .status.loading {
+            background: rgba(37, 211, 102, 0.2);
+            color: var(--primary-light);
+        }
+
+        .info-box {
+            background: rgba(37, 211, 102, 0.1);
+            border-left: 4px solid var(--primary-light);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .info-box strong {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(37, 211, 102, 0.3);
+            border-top: 2px solid var(--primary-light);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 5px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🟢 GREEN-API Dashboard</h1>
+            <p class="subtitle">WhatsApp Integration Platform</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- Credentials Panel -->
+            <div class="panel">
+                <h2>Учетные данные</h2>
+                <div class="info-box">
+                    <strong>Инструкция:</strong> Получите idInstance и ApiTokenInstance из личного кабинета GREEN-API
+                </div>
+
+                <div class="form-group">
+                    <label for="idInstance">idInstance</label>
+                    <input 
+                        type="text" 
+                        id="idInstance" 
+                        placeholder="Введите ваш idInstance"
+                        value=""
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="apiToken">ApiTokenInstance</label>
+                    <input 
+                        type="password" 
+                        id="apiToken" 
+                        placeholder="Введите ваш API токен"
+                        value=""
+                    >
+                </div>
+
+                <button class="full-width" onclick="testConnection()">
+                    Проверить подключение
+                </button>
+                <div id="connectionStatus"></div>
+            </div>
+
+            <!-- Methods Panel -->
+            <div class="panel">
+                <h2>API Методы</h2>
+                
+                <div class="button-group">
+                    <button onclick="callMethod('getSettings')">Get Settings</button>
+                    <button onclick="callMethod('getStateInstance')">Get State</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber">Номер телефона (для отправки)</label>
+                    <input 
+                        type="text" 
+                        id="phoneNumber" 
+                        placeholder="Введите номер (формат: 79991234567)"
+                        value=""
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Сообщение</label>
+                    <textarea 
+                        id="message" 
+                        placeholder="Введите текст сообщения"
+                    ></textarea>
+                </div>
+
+                <button class="full-width" onclick="callMethod('sendMessage')">
+                    Отправить сообщение
+                </button>
+
+                <div class="form-group">
+                    <label for="fileUrl">URL файла (для отправки)</label>
+                    <input 
+                        type="url" 
+                        id="fileUrl" 
+                        placeholder="https://example.com/file.pdf"
+                        value=""
+                    >
+                </div>
+
+                <button class="full-width" onclick="callMethod('sendFileByUrl')">
+                    Отправить файл по URL
+                </button>
+            </div>
+
+            <!-- Response Panel -->
+            <div class="panel response-panel">
+                <h2>Ответ API</h2>
+                <textarea id="responseOutput" readonly placeholder="Результаты API запросов отобразятся здесь..."></textarea>
+                <div id="requestStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://api.green-api.com/waInstance';
+
+        function getCredentials() {
+            const idInstance = document.getElementById('idInstance').value.trim();
+            const apiToken = document.getElementById('apiToken').value.trim();
+
+            if (!idInstance || !apiToken) {
+                showError('Пожалуйста, введите idInstance и ApiTokenInstance');
+                return null;
+            }
+
+            return { idInstance, apiToken };
+        }
+
+        function showMessage(message, type = 'info') {
+            const output = document.getElementById('responseOutput');
+            const timestamp = new Date().toLocaleTimeString('ru-RU');
+            const prefix = type === 'error' ? '❌ ERROR' : '✅ SUCCESS';
+            output.value += `[${timestamp}] ${prefix}\n${message}\n${'='.repeat(80)}\n\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function showError(message) {
+            showMessage(message, 'error');
+            const status = document.getElementById('requestStatus');
+            status.innerHTML = `<span class="status error">Ошибка запроса</span>`;
+        }
+
+        function showLoading() {
+            const status = document.getElementById('requestStatus');
+            status.innerHTML = `<span class="status loading"><span class="spinner"></span>Загрузка...</span>`;
+        }
+
+        function showSuccess() {
+            const status = document.getElementById('requestStatus');
+            status.innerHTML = `<span class="status success">✓ Успешно</span>`;
+        }
+
+        async function testConnection() {
+            const creds = getCredentials();
+            if (!creds) return;
+
+            showLoading();
+
+            try {
+                const response = await fetch(
+                    `${API_BASE_URL}${creds.idInstance}/getSettings/${creds.apiToken}`,
+                    { method: 'GET' }
+                );
+
+                if (response.ok) {
+                    const data = await response.json();
+                    showMessage(`Подключение успешно!\n\nОтвет:\n${JSON.stringify(data, null, 2)}`);
+                    showSuccess();
+                } else {
+                    showError(`Ошибка подключения: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                showError(`Ошибка сети: ${error.message}\n\nУбедитесь, что idInstance и ApiTokenInstance введены корректно`);
+            }
+        }
+
+        async function callMethod(method) {
+            const creds = getCredentials();
+            if (!creds) return;
+
+            showLoading();
+
+            try {
+                let url = `${API_BASE_URL}${creds.idInstance}/${method}/${creds.apiToken}`;
+                let options = { method: 'POST', headers: { 'Content-Type': 'application/json' } };
+                let body = {};
+
+                switch (method) {
+                    case 'getSettings':
+                    case 'getStateInstance':
+                        options.method = 'GET';
+                        break;
+
+                    case 'sendMessage':
+                        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+                        const message = document.getElementById('message').value.trim();
+
+                        if (!phoneNumber || !message) {
+                            showError('Пожалуйста, введите номер телефона и сообщение');
+                            return;
+                        }
+
+                        body = {
+                            chatId: `${phoneNumber}@c.us`,
+                            message: message
+                        };
+                        break;
+
+                    case 'sendFileByUrl':
+                        const fileUrl = document.getElementById('fileUrl').value.trim();
+                        const fileMessage = document.getElementById('message').value.trim();
+
+                        if (!fileUrl) {
+                            showError('Пожалуйста, введите URL файла');
+                            return;
+                        }
+
+                        if (!document.getElementById('phoneNumber').value.trim()) {
+                            showError('Пожалуйста, введите номер телефона');
+                            return;
+                        }
+
+                        body = {
+                            chatId: `${document.getElementById('phoneNumber').value.trim()}@c.us`,
+                            urlFile: fileUrl,
+                            fileName: fileUrl.split('/').pop()
+                        };
+                        break;
+                }
+
+                if (options.method === 'POST') {
+                    options.body = JSON.stringify(body);
+                }
+
+                const response = await fetch(url, options);
+                const responseData = await response.json();
+
+                if (response.ok) {
+                    showMessage(
+                        `Метод: ${method}\n\nЗапрос:\n${JSON.stringify(body, null, 2)}\n\nОтвет:\n${JSON.stringify(responseData, null, 2)}`
+                    );
+                    showSuccess();
+                } else {
+                    showError(
+                        `Ошибка API: ${response.status}\n\nОтвет:\n${JSON.stringify(responseData, null, 2)}`
+                    );
+                }
+            } catch (error) {
+                showError(`Ошибка выполнения запроса: ${error.message}`);
+            }
+        }
+
+        // Load credentials from localStorage if available
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('greenApiCreds');
+            if (saved) {
+                try {
+                    const creds = JSON.parse(saved);
+                    document.getElementById('idInstance').value = creds.idInstance || '';
+                    document.getElementById('apiToken').value = creds.apiToken || '';
+                } catch (e) {
+                    console.error('Failed to load credentials', e);
+                }
+            }
+        });
+
+        // Save credentials to localStorage
+        document.getElementById('idInstance').addEventListener('blur', saveCreds);
+        document.getElementById('apiToken').addEventListener('blur', saveCreds);
+
+        function saveCreds() {
+            const creds = {
+                idInstance: document.getElementById('idInstance').value,
+                apiToken: document.getElementById('apiToken').value
+            };
+            localStorage.setItem('greenApiCreds', JSON.stringify(creds));
+        }
+    </script>
+</body>
+</html>
