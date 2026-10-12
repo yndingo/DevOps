@@ -5,10 +5,10 @@
 ## Проекты
 
 ### Effective Mobile
-Кратко указать задачу, технологии, что было реализовано и ссылку на каталог.
+https://github.com/yndingo/DevOps/tree/main/Effective%20Mobile
 
 ### GREEN-API
-Кратко указать задачу, технологии, результат и ссылку на каталог.
+https://github.com/yndingo/DevOps/tree/main/GREEN-API
 
 ## Основной дипломный проект
 
