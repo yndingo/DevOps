@@ -1,0 +1,5 @@
+.env
+drill/
+backups/
+*.dump
+*.partial

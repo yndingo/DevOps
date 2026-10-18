@@ -1,0 +1,36 @@
+name: PostgreSQL Backup Checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: projects/postgres-backup-recovery
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Check shell scripts
+        run: shellcheck scripts/*.sh
+
+      - name: Prepare test configuration
+        run: cp .env.example .env
+
+      - name: Validate Compose configuration
+        run: |
+          docker compose config --quiet
+          docker compose --profile scheduler config --quiet
