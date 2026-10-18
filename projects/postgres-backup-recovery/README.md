@@ -36,6 +36,9 @@ Ubuntu Server VM
 Требования: Linux, Docker Engine и Docker Compose с поддержкой профилей.
 Все команды выполняются из корня проекта.
 
+git clone https://github.com/yndingo/DevOps.git
+cd DevOps/projects/postgres-backup-recovery
+
 Подготовить конфигурацию:
 
 ```bash
