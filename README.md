@@ -10,7 +10,7 @@ https://github.com/yndingo/DevOps/tree/main/Effective%20Mobile
 ### GREEN-API
 https://github.com/yndingo/DevOps/tree/main/GREEN-API
 
-## Основной проект
+### проект яндекс
 
 https://github.com/yndingo/CI-CD
 
