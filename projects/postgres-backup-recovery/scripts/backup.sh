@@ -5,9 +5,7 @@ set -eu
 : "${POSTGRES_USER:?POSTGRES_USER is required}"
 : "${POSTGRES_DB:?POSTGRES_DB is required}"
 
-BACKUP_DIR="${BACKUP_DIR:-/backups}"     # :- это дефолт, если не задано
-
-# здесь: mkdir, mktemp-имя, финальное TARGET
+# BACKUP_DIR прирсвоение директории
 BACKUP_DIR="${BACKUP_DIR:-/backups}"
 mkdir -p "${BACKUP_DIR}"
 
